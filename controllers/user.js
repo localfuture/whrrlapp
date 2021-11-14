@@ -48,6 +48,7 @@ exports.userLogin = (req, res, next) => {
         process.env.JWT_KEY,
         { expiresIn: "1h" }
       );
+      res.cookie('jwt', token);
       res.status(200).json({
         token: token,
         expiresIn: 3600,

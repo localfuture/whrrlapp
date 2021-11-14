@@ -6,8 +6,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-var passport = require("passport");
-var GoogleStrategy = require("passport-google-oauth20").Strategy;
+const passport = require("passport");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -28,24 +31,76 @@ mongoose
     console.log("Connection Failed!!!");
   });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(passport.initialize());
+
+var opts = {};
+opts.jwtFromRequest = function (req) {
+  // tell passport to read JWT from cookies
+  var token = null;
+  if (req && req.cookies) {
+    token = req.cookies["jwt"];
+  }
+  return token;
+};
+opts.secretOrKey = process.env.JWT_KEY;
+
+// main authentication, our app will rely on it
+passport.use(
+  new JwtStrategy(opts, function (jwt_payload, done) {
+    console.log("JWT BASED AUTH GETTING CALLED"); // called everytime a protected URL is being served
+    if (CheckUser(jwt_payload.data)) {
+      return done(null, jwt_payload.data);
+    } else {
+      // user account doesnt exists in the DATA
+      return done(null, false);
+    }
+  })
+);
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: "http://localhost:3000/auth/google/whrrl",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
-    function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
+    function (accessToken, refreshToken, profile, done) {
+      console.log(accessToken, refreshToken, profile);
+      console.log("GOOGLE BASED OAUTH VALIDATION GETTING CALLED");
+      return done(null, profile);
     }
   )
 );
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/images", express.static(path.join(__dirname, "images")));
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000",
+      profileFields: ["id", "displayName", "email", "picture"],
+    },
+    function (accessToken, refreshToken, profile, done) {
+      console.log(profile);
+      console.log("FACEBOOK BASED OAUTH VALIDATION GETTING CALLED");
+      return done(null, profile);
+    }
+  )
+);
+
+passport.serializeUser(function (user, done) {
+  console.log("I should have jack ");
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  console.log("I wont have jack shit");
+  done(null, obj);
+});
 
 // For CORS
 app.use((req, res, next) => {
