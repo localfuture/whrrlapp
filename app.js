@@ -6,6 +6,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var passport = require("passport");
+var GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -16,7 +18,7 @@ var app = express();
 mongoose
   .connect(process.env.DB_API, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to DataBase");
@@ -25,6 +27,21 @@ mongoose
     console.log(error);
     console.log("Connection Failed!!!");
   });
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/google/whrrl",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    }
+  )
+);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
