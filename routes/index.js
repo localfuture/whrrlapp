@@ -3,6 +3,7 @@ var passport = require("passport");
 var router = express.Router();
 
 const UserController = require("../controllers/user");
+const checkAuth = require('../middleware/check-auth');
 
 /* GET signIn page. */
 router.get("/", function (req, res, next) {

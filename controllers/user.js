@@ -12,7 +12,13 @@ exports.createUser = (req, res, next) => {
     user
       .save()
       .then(result => {
+        const token = jwt.sign(
+          { email: req.body.email, userId: result._id },
+          process.env.JWT_KEY,
+          { expiresIn: "1h" }
+        );
         res.status(201).json({
+          token: token,
           message: "User created!",
           result: result
         });
