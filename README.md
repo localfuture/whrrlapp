@@ -1,6 +1,6 @@
 # whrrlapp
 
-Assignment 
+Assignment
 
 ---
 
@@ -55,11 +55,7 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Configure app
 
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
-
-- A setting;
-- Another setting;
-- One more setting;
+Open `whrrlapp` then edit it with your settings. You will need to copy the .env file
 
 ## Running the project
 
