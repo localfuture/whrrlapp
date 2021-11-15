@@ -19,7 +19,7 @@ router.get("/login", function (req, res, next) {
 
 /* GET home page. */
 router.get("/home", checkAuth, (req, res) => {
-  res.render("home");
+  res.status(200).render('home');
 });
 
 // OAuth Authentication, Just going to this URL will open OAuth screens
