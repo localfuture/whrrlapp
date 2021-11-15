@@ -78,26 +78,28 @@ function download() {
 
   var url = "/download/" + aadhaar;
 
-  $.ajax({
-    headers: {
-      "Content-Type": "application/json",
-    },
-    url: url,
-    type: "GET",
-    success: function (data) {
+  window.location = url;
+
+  // $.ajax({
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   url: url,
+  //   type: "GET",
+  //   success: function (data) {
      
-    },
-    fail: function (response) {
-      console.log(response);
-    },
-    error: function (data) {
-      Swal.fire("Oops", data.responseJSON.message, "error").then(() => {
-        window.location = "/home";
-      });
-    },
-    contentType: false,
-    processData: false,
-  });
+  //   },
+  //   fail: function (response) {
+  //     console.log(response);
+  //   },
+  //   error: function (data) {
+  //     Swal.fire("Oops", data.responseJSON.message, "error").then(() => {
+  //       window.location = "/home";
+  //     });
+  //   },
+  //   contentType: false,
+  //   processData: false,
+  // });
 
 }
 

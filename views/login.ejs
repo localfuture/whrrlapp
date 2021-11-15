@@ -83,15 +83,23 @@
   <body class="text-center">
     <main class="form-signin">
       <h1>Welcome</h1>
-      <a type="button" class="w-100 btn btn-lg btn-primary m-2" href="/auth/facebook">
+      <a
+        type="button"
+        class="w-100 btn btn-lg btn-primary m-2"
+        href="/auth/facebook"
+      >
         Sign in with Facebook
       </a>
-      <a type="button" class="w-100 btn btn-lg btn-danger m-2" href="/auth/google">
+      <a
+        type="button"
+        class="w-100 btn btn-lg btn-danger m-2"
+        href="/auth/google"
+      >
         Sign in with Google
       </a>
       <hr />
       <form class="needs-validation" novalidate id="createRequirement">
-        <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+        <h1 class="h3 mb-3 fw-normal">Login</h1>
 
         <div class="form-floating">
           <input
@@ -120,10 +128,10 @@
           </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">
-          Sign up
+          Login
         </button>
-        <a role="button" class="w-100 btn btn-lg btn-primary mt-2" href="/login">
-          Login in
+        <a role="button" class="w-100 btn btn-lg btn-primary mt-2" href="/">
+          Sign up
         </a>
       </form>
     </main>
@@ -166,7 +174,7 @@
               event.stopPropagation();
             }
             form.classList.add("was-validated");
-            createUser();
+            login();
           },
           false
         );

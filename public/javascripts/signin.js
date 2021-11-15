@@ -34,6 +34,42 @@ function createUser() {
   
 }
 
+function login() {
+  event.preventDefault();
+  var url = "/login";
+
+  var formData = JSON.stringify($("form").serializeObject());
+
+  $.ajax({
+    headers: {
+      "Content-Type": "application/json"
+    },
+    url: url,
+    type: "POST",
+    data: formData,
+    success: function(data) {
+      console.log(data);
+      if (data.userId) {
+        window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("userId", data.userId);
+        window.location = "/home";
+      }
+    },
+    fail: function(response) {
+      console.log(response);
+    },
+    error: function(data) {
+      Swal.fire("Oops", data.responseJSON.message, "error").then(() => {
+        window.location = "/";
+      });
+    },
+    contentType: false,
+    processData: false
+  });
+
+}
+
 // utils
 $.fn.serializeObject = function() {
     var o = {};

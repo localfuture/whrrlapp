@@ -12,8 +12,13 @@ router.get("/", function (req, res, next) {
   res.render("signin");
 });
 
+/* GET login page. */
+router.get("/login", function (req, res, next) {
+  res.render("login");
+});
+
 /* GET home page. */
-router.get("/home", (req, res) => {
+router.get("/home", checkAuth, (req, res) => {
   res.render("home");
 });
 

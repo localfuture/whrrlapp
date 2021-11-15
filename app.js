@@ -127,8 +127,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
-app.get('/download/:aadhar', function(req, res){
-  const file = `${__dirname}/public/data/uploads/${req.params.aadhaar}`;
+app.get('/download/:aadhaar', function(req, res){
+  // const file = `${__dirname}/public/data/uploads/${req.params.aadhaar}`;
+  const file = `public/data/uploads/${req.params.aadhaar}`;
   res.download(file);
 });
 
