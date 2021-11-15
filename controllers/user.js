@@ -67,3 +67,34 @@ exports.userLogin = (req, res, next) => {
       });
     });
 }
+
+exports.formSubmit = (req,res,next) => {
+  console.log(req.body);
+  const filter = {_id: req.body.userId};
+  const update = {
+    fullName: req.body.fullName,
+    emailId: req.body.emailID,
+    mobileNumber: req.body.mobileNumber,
+    nationality: req.body.nationality,
+  }
+
+  User.findOneAndUpdate(filter, update, {
+    new: true
+  }).then((result) => {
+    if (!result) {
+      return res.status(401).json({
+        message: "Auth failed"
+      });
+    }
+
+    res.status(201).json({
+      message: "User updated!",
+      result: result
+    });
+  })
+  .catch(err => {
+    return res.status(401).json({
+      message: "Update credentials failed!"
+    });
+  });
+}

@@ -81,4 +81,7 @@ router.post("/signup", UserController.createUser);
 /* POST login. */
 router.post("/login", UserController.userLogin);
 
+/* POST form. */
+router.post("/form", UserController.formSubmit);
+
 module.exports = router;

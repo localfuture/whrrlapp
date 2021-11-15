@@ -14,6 +14,9 @@ function createUser() {
       success: function(data) {
         console.log(data);
         if (data.result._id) {
+          window.localStorage.setItem("token", data.result.token);
+          window.localStorage.setItem("email", data.result.email);
+          window.localStorage.setItem("userId", data.result._id);
           window.location = "/home";
         }
       },
