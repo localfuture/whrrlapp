@@ -49,7 +49,7 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Install
 
-    $ git clone https://github.com/localfuture/whrrlapp
+    $ git clone https://github.com/localfuture/whrrlapp.git
     $ cd whrrlapp
     $ yarn install
 
