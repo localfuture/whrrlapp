@@ -1,6 +1,8 @@
 var express = require("express");
 var passport = require("passport");
 var router = express.Router();
+const multer  = require('multer')
+const upload = multer({ dest: './public/data/uploads/' })
 
 const UserController = require("../controllers/user");
 const checkAuth = require('../middleware/check-auth');
@@ -82,7 +84,7 @@ router.post("/signup", UserController.createUser);
 router.post("/login", UserController.userLogin);
 
 /* POST form. */
-router.post("/form", UserController.formSubmit);
+router.post("/form", upload.single('aadhaar'),UserController.formSubmit);
 
 /* GET form. */
 router.get("/formview", (req,res) => {

@@ -149,7 +149,7 @@
           <div class="p-5">
             <h3 class="font-weight-bold">Welcome,</h3>
             <h3 class="font-weight-bold"></h3>
-            <form class="needs-validation" novalidate id="createRequirement">
+            <form action="/form" enctype="multipart/form-data" method="post">
               <img
                 src="/images/profile.jpg"
                 class="img-fluid"
@@ -158,6 +158,7 @@
               <h3 class=" mt-5">
                 Kindly help us with the following information
               </h3>
+              <input type="hidden" name="userId">
               <div class="row">
                 <div class="col-4">
                   <input
@@ -201,7 +202,7 @@
                       Add your Aadhaar Front (.pdf, .jpg, .png)
                       <input
                       type="file"
-                      class="custom-file-input"
+                      class="form-control-file"
                       name="aadhaar"
                       required
                     />
@@ -239,6 +240,8 @@
   <script>
     (function () {
       "use strict";
+
+      $("input[name='userId']").val(window.localStorage.getItem("userId"));
 
       var forms = document.querySelectorAll(".needs-validation");
 

@@ -4,14 +4,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.createUser = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10).then(hash => {
+  bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
       email: req.body.email,
-      password: hash
+      password: hash,
     });
     user
       .save()
-      .then(result => {
+      .then((result) => {
         const token = jwt.sign(
           { email: req.body.email, userId: result._id },
           process.env.JWT_KEY,
@@ -20,33 +20,33 @@ exports.createUser = (req, res, next) => {
         res.status(201).json({
           token: token,
           message: "User created!",
-          result: result
+          result: result,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({
-          message: "Invalid authentication credentials!"
+          message: "Invalid authentication credentials!",
         });
       });
   });
-}
+};
 
 exports.userLogin = (req, res, next) => {
   let fetchedUser;
   User.findOne({ email: req.body.email })
-    .then(user => {
+    .then((user) => {
       if (!user) {
         return res.status(401).json({
-          message: "Auth failed"
+          message: "Auth failed",
         });
       }
       fetchedUser = user;
       return bcrypt.compare(req.body.password, user.password);
     })
-    .then(result => {
+    .then((result) => {
       if (!result) {
         return res.status(401).json({
-          message: "Auth failed"
+          message: "Auth failed",
         });
       }
       const token = jwt.sign(
@@ -54,69 +54,72 @@ exports.userLogin = (req, res, next) => {
         process.env.JWT_KEY,
         { expiresIn: "1h" }
       );
-      res.cookie('jwt', token);
+      res.cookie("jwt", token);
       res.status(200).json({
         token: token,
         expiresIn: 3600,
-        userId: fetchedUser._id
+        userId: fetchedUser._id,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       return res.status(401).json({
-        message: "Invalid authentication credentials!"
+        message: "Invalid authentication credentials!",
       });
     });
-}
+};
 
-exports.formSubmit = (req,res,next) => {
-  console.log(req.body);
-  const filter = {_id: req.body.userId};
+exports.formSubmit = (req, res, next) => {
+  console.log(req.body, req.file.filename);
+  const filter = { _id: req.body.userId };
   const update = {
     fullName: req.body.fullName,
     emailId: req.body.emailID,
     mobileNumber: req.body.mobileNumber,
     nationality: req.body.nationality,
-  }
+    aadhaarUri: req.file.filename,
+  };
 
   User.findOneAndUpdate(filter, update, {
-    new: true
-  }).then((result) => {
-    if (!result) {
-      return res.status(401).json({
-        message: "Auth failed"
-      });
-    }
-
-    res.status(201).json({
-      message: "User updated!",
-      result: result
-    });
+    new: true,
   })
-  .catch(err => {
-    return res.status(401).json({
-      message: "Update credentials failed!"
-    });
-  });
-}
+    .then((result) => {
+      console.log(result);
+      if (!result) {
+        return res.status(401).json({
+          message: "Auth failed",
+        });
+      }
 
-exports.formData = (req,res,next) => {
-
-  User.findOne({_id: req.params.userId})
-  .then((result) => {
-    if (!result) {
+      // res.status(201).json({
+      //   message: "User updated!",
+      //   result: result,
+      // });
+      res.redirect('/formview');
+    })
+    .catch((err) => {
       return res.status(401).json({
-        message: "Failed to get data"
+        message: "Update credentials failed!",
       });
-    }
+    });
+};
 
-    res.status(201).json({
-      message: "User data",
-      result: result
+exports.formData = (req, res, next) => {
+  User.findOne({ _id: req.params.userId })
+    .then((result) => {
+      if (!result) {
+        return res.status(401).json({
+          message: "Failed to get data",
+        });
+      }
+
+      res.status(201).json({
+        message: "User data",
+        result: result,
+      });
+    })
+    .catch((err) => {
+      return res.status(401).json({
+        message: "Failed to fetch data",
+      });
     });
-  })
-  .catch(err => {
-    return res.status(401).json({
-      message: "Failed to fetch data"
-    });
-  });
-}
+};

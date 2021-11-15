@@ -35,6 +35,7 @@ function logOut() {
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("email");
   window.localStorage.removeItem("userId");
+  window.localStorage.removeItem("aadhaar");
   window.location = "/";
 }
 
@@ -51,11 +52,40 @@ function getFormData() {
     url: url,
     type: "GET",
     success: function (data) {
+      window.localStorage.setItem('aadhaar', data.result.aadhaarUri);
       $("input[name='fullName']").val(data.result.fullName);
       $("input[name='emailId']").val(data.result.emailId);
       $("input[name='mobileNumber']").val(data.result.mobileNumber);
       $("input[name='nationality']").val(data.result.nationality);
       // $("input[name='fullName']").val(data.result.fullName);
+    },
+    fail: function (response) {
+      console.log(response);
+    },
+    error: function (data) {
+      Swal.fire("Oops", data.responseJSON.message, "error").then(() => {
+        window.location = "/home";
+      });
+    },
+    contentType: false,
+    processData: false,
+  });
+
+}
+
+function download() {
+  const aadhaar = window.localStorage.getItem('aadhaar');
+
+  var url = "/download/" + aadhaar;
+
+  $.ajax({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: url,
+    type: "GET",
+    success: function (data) {
+     
     },
     fail: function (response) {
       console.log(response);

@@ -93,12 +93,10 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-  console.log("I should have jack ");
   done(null, user);
 });
 
 passport.deserializeUser(function (obj, done) {
-  console.log("I wont have jack shit");
   done(null, obj);
 });
 
@@ -128,6 +126,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
+app.get('/download/:aadhar', function(req, res){
+  const file = `${__dirname}/public/data/uploads/${req.params.aadhaar}`;
+  res.download(file);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
