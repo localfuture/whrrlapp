@@ -1,8 +1,6 @@
 # whrrlapp
 
-# Project Title
-
-A nice project with a nice description
+Assignment 
 
 ---
 
@@ -51,8 +49,8 @@ After installing node, this project will need yarn too, so just run the followin
 
 ## Install
 
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
-    $ cd PROJECT_TITLE
+    $ git clone https://github.com/localfuture/whrrlapp
+    $ cd whrrlapp
     $ yarn install
 
 ## Configure app
