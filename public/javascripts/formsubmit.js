@@ -16,7 +16,7 @@ function formSubmit() {
     type: "POST",
     data: formData,
     success: function (data) {
-      console.log(data);
+      window.location = "/formview";
     },
     fail: function (response) {
       console.log(response);
@@ -36,6 +36,39 @@ function logOut() {
   window.localStorage.removeItem("email");
   window.localStorage.removeItem("userId");
   window.location = "/";
+}
+
+function getFormData() {
+  const userId = window.localStorage.getItem('userId');
+
+  var url = "/formdata/" + userId;
+  
+
+  $.ajax({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: url,
+    type: "GET",
+    success: function (data) {
+      $("input[name='fullName']").val(data.result.fullName);
+      $("input[name='emailId']").val(data.result.emailId);
+      $("input[name='mobileNumber']").val(data.result.mobileNumber);
+      $("input[name='nationality']").val(data.result.nationality);
+      // $("input[name='fullName']").val(data.result.fullName);
+    },
+    fail: function (response) {
+      console.log(response);
+    },
+    error: function (data) {
+      Swal.fire("Oops", data.responseJSON.message, "error").then(() => {
+        window.location = "/home";
+      });
+    },
+    contentType: false,
+    processData: false,
+  });
+
 }
 
 // utils

@@ -98,3 +98,25 @@ exports.formSubmit = (req,res,next) => {
     });
   });
 }
+
+exports.formData = (req,res,next) => {
+
+  User.findOne({_id: req.params.userId})
+  .then((result) => {
+    if (!result) {
+      return res.status(401).json({
+        message: "Failed to get data"
+      });
+    }
+
+    res.status(201).json({
+      message: "User data",
+      result: result
+    });
+  })
+  .catch(err => {
+    return res.status(401).json({
+      message: "Failed to fetch data"
+    });
+  });
+}

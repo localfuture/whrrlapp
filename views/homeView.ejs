@@ -77,8 +77,15 @@
       <div class="row">
         <nav
           id="sidebarMenu"
-          class="col-md-3 col-lg-2 d-md-block bg-gradient sidebar collapse bg-primary"
-          style="height: 1080px;"
+          class="
+            col-md-3 col-lg-2
+            d-md-block
+            bg-gradient
+            sidebar
+            collapse
+            bg-primary
+          "
+          style="height: 1080px"
         >
           <div class="position-sticky pt-3">
             <ul class="nav flex-column">
@@ -119,7 +126,7 @@
               </li>
             </ul>
           </div>
-          <div class="position-sticky pt-3" style="margin-top: 200px;">
+          <div class="position-sticky pt-3" style="margin-top: 200px">
             <ul class="nav flex-column">
               <p class="text-light m-3">SETTINGS</p>
               <li class="nav-item">
@@ -135,9 +142,10 @@
               <li class="nav-item">
                 <a
                   class="nav-link text-light"
-                  style="cursor: pointer;"
+                  style="cursor: pointer"
                   aria-current="page"
-                  onclick="logOut()">
+                  onclick="logOut()"
+                >
                   Log Out
                 </a>
               </li>
@@ -155,8 +163,8 @@
                 class="img-fluid"
                 alt="Responsive image"
               />
-              <h3 class=" mt-5">
-                Kindly help us with the following information
+              <h3 class="mt-5">
+                Thank you for the submission. Please check the information below
               </h3>
               <div class="row">
                 <div class="col-4">
@@ -165,6 +173,7 @@
                     class="form-control required"
                     placeholder="Full Name"
                     name="fullName"
+                    readonly
                     required
                   />
                 </div>
@@ -173,7 +182,8 @@
                     type="email"
                     class="form-control required"
                     placeholder="Email ID"
-                    name="emailID"
+                    name="emailId"
+                    readonly
                     required
                   />
                 </div>
@@ -185,29 +195,31 @@
                     class="form-control required"
                     placeholder="Mobile Number"
                     name="mobileNumber"
+                    readonly
                     required
                   />
                 </div>
                 <div class="col-4">
-                  <select class="form-select" name="nationality" required>
-                    <option selected>Open this select menu</option>
-                    <option value="Indian">Indian</option>
-                    <option value="Foreigner">Foreigner</option>
-                  </select>
+                  <input
+                    type="string"
+                    class="form-control required"
+                    placeholder="Nationality"
+                    name="nationality"
+                    readonly
+                    required
+                  />
                 </div>
               </div>
-              <div class="row mt-5">
-                  <div class="col-8 p-4" style="border: 5px dashed black;">
-                      Add your Aadhaar Front (.pdf, .jpg, .png)
-                      <input
-                      type="file"
-                      class="custom-file-input"
-                      name="aadhaar"
-                      required
-                    />
-                  </div>
+              <div class="row">
+                <div class="col-4">
+                  <button type="button" class="btn btn-primary mt-4">
+                    Download
+                  </button>
+                </div>
+                <div class="col-4 mt-4">
+                    Download Aadhaar
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary mt-4">Submit</button>
             </form>
           </div>
         </main>
@@ -240,22 +252,7 @@
     (function () {
       "use strict";
 
-      var forms = document.querySelectorAll(".needs-validation");
-
-      Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener(
-          "submit",
-          function (event) {
-            if (!form.checkValidity()) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
-            form.classList.add("was-validated");
-            formSubmit();
-          },
-          false
-        );
-      });
+      getFormData();
     })();
   </script>
 </html>

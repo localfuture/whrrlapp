@@ -84,4 +84,12 @@ router.post("/login", UserController.userLogin);
 /* POST form. */
 router.post("/form", UserController.formSubmit);
 
+/* GET form. */
+router.get("/formview", (req,res) => {
+  res.render("homeView");
+})
+
+/* GET form data */
+router.get("/formdata/:userId", UserController.formData);
+
 module.exports = router;
